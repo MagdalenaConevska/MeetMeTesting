@@ -1,0 +1,67 @@
+﻿.profile__loader{
+    margin: auto;
+    width: 10%;
+}
+
+.profile__space {
+    min-height: 600px;
+    margin-bottom: 40px;
+}
+
+.label__style {
+    color: #4f4f4f;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn-connect {
+    margin-top: 60px;
+}
+
+.btn__connection {
+    border-radius: 0px;
+
+}
+
+.btn__add-event-pr {
+    border-radius: 0px;
+    border-color: #68b8df;
+    background-color: #68b8df;
+    color: white;
+    padding: 10px 35px;
+    font-size: 16px;
+    width: 163px;
+    margin-top: 23px;
+}
+
+.btn__add-event-pr:hover {
+    border-radius: 0px;
+    border-color: #f2f2f2;
+    background-color: #6ec5e9;
+    color: #f2f2f2;
+    padding: 10px 35px;
+    font-size: 16px;
+    width: 163px;
+}
+
+.btn__add-meeting-pr {
+    border-radius: 0px;
+    border-color: #aacd4b;
+    background-color: #aacd4b;
+    color: white;
+    padding: 10px 35px;
+    font-size: 16px;
+    width: 163px;
+    margin-top: 23px;
+}
+
+.btn__add-meeting-pr:hover {
+    border-radius: 0px;
+    border-color: #f2f2f2;
+    background-color: #b5d954;
+    color: #f2f2f2;
+    padding: 10px 35px;
+    font-size: 16px;
+    width: 163px;
+    margin-top: 23px;
+}

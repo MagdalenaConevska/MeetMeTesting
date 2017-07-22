@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MeetMe</title>
+    <!-- Concatenated CSS -->
+    <link href="/dest/lib.css?rev=9709e944cf3c069c0fe9a1aeb5e286c6" rel="stylesheet">
+    <link href="/dest/app.css?rev=2420449f0d2b6153d3e82445fa96478d" rel="stylesheet">
+</head>
+<body ng-app="meet-me">
+   <div class="navbar navbar-fixed-top navbar__style" role="navigation" ng-controller="indexController">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="btn btn-success navbar-toggle" ng-click="navbarExpanded = !navbarExpanded">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="images/logo.png" class="logo__size" />
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" collapse="!navbarExpanded">
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-hide="!authentication.isAuth" class="search__margin">
+                        <i class="fa fa-search icon-style" aria-hidden="true"></i>
+                        <angucomplete-alt id="ex1"
+                                          class="search-box-holder"
+                                          placeholder="Search for user..."
+                                          pause="100"
+                                          selected-object="selectUser"
+                                          local-data="users"
+                                          search-fields="firstName"
+                                          title-field="firstName"
+                                          clear-selected="true"
+                                          minlength="1"
+                                          input-class="form-control form-control-small search-box__style" />
+                    </li>
+                    <li ng-hide="!authentication.isAuth"><a ui-sref="meetingRequests" class="text-style"> <notification-icon animation="shake" count="count"> <i class="fa fa-bell-o icon-style"></i></notification-icon></a></li>
+                    <li ng-hide="!authentication.isAuth"><a ui-sref="connectionNotifications" class="text-style"><notification-icon animation="shake" count="count"> <i class="fa fa-envelope-o icon-style"></i></notification-icon></a></li>
+                    <li ng-hide="!authentication.isAuth"><a ui-sref="profile({ id: authentication.user.id })" class="text-style"><i class="fa fa-user icon-style"></i></a></li>
+                    <li ng-hide="!authentication.isAuth"><a href="" class="text-style" ng-click="logOut()">Logout</a></li>
+                    <li ng-hide="authentication.isAuth"> <a ui-sref="login" class="text-style">Login</a></li>
+                    <li ng-hide="authentication.isAuth"> <a ui-sref="register" class="text-style">Register</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div ui-view class="demo main-page main-page__margins"></div>
+
+    <footer class="footer">
+        <div class="row">
+            <div class="col-md-4 left-footer">
+                MEETme WEB Applcation 2017
+            </div>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </footer>
+
+    <!-- Concatenated libraries -->
+    <script src="/dest/lib.js?rev=f939147b905bcb01b68f26fa463a4674"></script>
+    <!-- Concatenated application -->
+    <script src="/dest/src.js?rev=0c94e82c5e195fa843c318b45202c5e2"></script>
+</body>
+</html>

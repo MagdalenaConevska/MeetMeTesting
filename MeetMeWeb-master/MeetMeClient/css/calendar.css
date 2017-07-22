@@ -1,0 +1,121 @@
+﻿.calendar__space {
+    height: 650px;
+}
+
+.fc-center {
+    color: #6c727a;
+    padding-bottom:15px;
+}
+
+.event {
+    color: black;
+    border-color: darkgray;
+}
+
+.event-low {
+    background-color: #ffee58;
+}
+
+.event-medium {
+    background-color: #ffb74d;
+}
+
+.event-high {
+    background-color: #e57373;
+}
+
+.event__name {
+    color: gray;
+}
+
+.btn-remove__style {
+    border-radius: 0px;
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    float:right;
+}
+
+.btn-remove__style:hover {
+    border-radius: 0px;
+    color: #fff;
+    background-color: #c9302c;
+    border-color: #e3e4ea;
+    float:right;
+}
+
+.btn-edit__style {
+    border-radius: 0px;    
+    border-color: #aacd4b;
+    background-color: #aacd4b;
+    color: white;
+}
+
+.btn-edit__style:hover {
+    border-radius: 0px;    
+    border-color: #e3e4ea;
+    background-color: #b5d954;
+    color: #f2f2f2;
+}
+
+.title__style {
+    color: #6c727a;
+    font-weight: bold;
+    margin-top: 0px !important;
+} 
+
+.text-small__style {
+    color: #6c727a;
+    font-size: 15px;
+}
+
+.panel__style {
+    max-width: 270px;
+    margin-top: 67px;
+    border-radius: 0px;
+    border-color: #e3e4ea;
+    background-color: #e3e4ea;
+    color: #68b8df;
+}
+
+.btn__add-event {
+    border-radius: 0px;
+    border-color: #68b8df;
+    background-color: #68b8df;
+    color: white;
+    padding: 10px 35px;
+    font-size: 16px;
+    width: 163px;
+}
+
+.btn__add-event:hover {
+    border-radius: 0px;
+    border-color: #f2f2f2;
+    background-color: #6ec5e9;
+    color: #f2f2f2;
+    padding: 10px 35px;
+    font-size: 16px;
+    width: 163px;
+}
+
+.btn__add-meeting {
+    border-radius: 0px;
+    border-color: #aacd4b;
+    background-color: #aacd4b;
+    color: white;
+    padding: 10px 35px;
+    font-size: 16px;
+    width: 163px;
+    margin-top: 23px;
+}
+
+.btn__add-meeting:hover {
+    border-radius: 0px;
+    border-color: #f2f2f2;
+    background-color: #b5d954;
+    color: #f2f2f2;
+    padding: 10px 35px;
+    font-size: 16px;
+    width: 163px;
+    margin-top: 23px;
+}

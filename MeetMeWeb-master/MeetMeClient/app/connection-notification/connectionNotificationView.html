@@ -1,0 +1,28 @@
+﻿<div class="container">
+    <div class="row" ng-hide="vm.done">
+        <div class="col-md-12">
+            <div class="profile__loader">
+                <img src="../images/ellipsis.gif" />
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-hide="!vm.done">
+        <div class="col-md-8">
+            <h2 class="heading__style">Notifications</h2>
+            <div ng-repeat="n in vm.notifications">
+                <div class="alert alert-info">
+                    <a ui-sref="profile({ id: n.user1.id })"><strong>{{n.user1.firstName}}&nbsp;{{n.user1.lastName}}</strong></a>
+                    <span>&nbsp;{{n.content}}.</span>
+                    <br />
+                    <span>{{n.date | date:'dd-MM-yyyy HH:mm:ss'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-hide="!vm.done">
+        <div class="col-md-12">
+            <button class="btn btn-default" ng-click="vm.loadMore()">Load More</button>
+        </div>
+    </div>
+</div>
+
