@@ -305,6 +305,7 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tests\Integration_Tests\Init.cs" />
+    <Compile Include="Tests\Unit_Tests\MeetingServiceTests.cs" />
     <Compile Include="Tests\Unit_Tests\MockingHelper.cs" />
     <Compile Include="Tests\Unit_Tests\UserServiceTests.cs" />
   </ItemGroup>
@@ -319,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Providers\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705250030153_Initial.resx">

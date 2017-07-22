@@ -46,10 +46,53 @@ namespace MeetMeWeb.Tests.Unit_Tests
             }
             return connectionNotifications;
         }
+
+        public static List<Meeting> PopulateMeetings(this List<Meeting> meetings, int number)
+        {
+            List<User> users = new List<User>();
+            users.PopulateUsers(1);
+
+            for (int i = 0; i < number; i++)
+            {
+                meetings.Add(new Meeting
+                {
+                    ID = Guid.NewGuid(),
+                    Start = DateTime.Now,
+                    Title = Guid.NewGuid().ToString(),
+                    Priority = PrioritiesY.Medium,
+                    Location = Guid.NewGuid().ToString(),
+                    creator = users.First(),
+                    End = DateTime.UtcNow.AddHours(2)
+                });
+            }
+            return meetings;
+        }
+
+        public static List<MeetingModel> PopulateMeetingModels(this List<MeetingModel> meetingModels, int number)
+        {
+            List<User> participants = new List<User>();
+            participants.PopulateUsers(3);
+
+            for (int i = 0; i < number; i++)
+            {
+                meetingModels.Add(new MeetingModel
+                {
+                    participants= participants,
+                    Start = DateTime.Now,
+                    Title = Guid.NewGuid().ToString(),
+                    Priority = PrioritiesY.Medium,
+                    Location = Guid.NewGuid().ToString(),
+                    creator = participants.First(),
+                    End = DateTime.UtcNow.AddHours(2)
+                });
+            }
+            return meetingModels;
+        }
+
         #endregion
 
         #region CreatingCopiesMethods
- 
+
         public static User CreateUserCopy(User original)
         {
             return new User
