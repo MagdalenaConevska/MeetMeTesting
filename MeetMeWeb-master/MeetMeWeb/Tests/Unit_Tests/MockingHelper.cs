@@ -16,7 +16,7 @@ namespace MeetMeWeb.Tests.Unit_Tests
             {
                 users.Add(new User
                 {
-                    Id = number.ToString(),
+                    Id = i.ToString(),
                     FirstName = Guid.NewGuid().ToString(),
                     LastName = Guid.NewGuid().ToString(),
                     Email = Guid.NewGuid().ToString()+"@gmail.com",
@@ -89,6 +89,54 @@ namespace MeetMeWeb.Tests.Unit_Tests
             return meetingModels;
         }
 
+        public static List<MeetingRequest> PopulateMeetingRequests(this List<MeetingRequest> meetingRequests, int number)
+        {
+            List<Meeting> meetings = new List<Meeting>();
+            meetings.PopulateMeetings(1);
+
+            List<User> users = new List<User>();
+            users.PopulateUsers(1);
+
+            for (int i = 0; i < number; i++)
+            {
+                meetingRequests.Add(new MeetingRequest
+                {
+                    ID = Guid.NewGuid(),
+                    Content = Guid.NewGuid().ToString(),
+                    Status = true,
+                    Meeting = meetings.First(),
+                    User = users.First()
+                });
+            }
+            return meetingRequests;
+        }
+
+        public static List<Event> PopulateEvents(this List<Event> events, int number)
+        {
+            List<MeetingRequest> meetingRequests = new List<MeetingRequest>();
+            meetingRequests.PopulateMeetingRequests(1);
+
+            List<User> users = new List<User>();
+            users.PopulateUsers(1);
+
+            for (int i = 0; i < number; i++)
+            {
+                events.Add(new Event
+                {
+                    ID = Guid.NewGuid(),
+                    Title = Guid.NewGuid().ToString(),
+                    flag = true,
+                    Location = Guid.NewGuid().ToString(),
+                    User = users.First(),
+                    Priority = PrioritiesY.High,
+                    MR = meetingRequests.First(),
+                    End = DateTime.UtcNow,
+                    Start = DateTime.UtcNow
+                });
+            }
+            return events;
+        }
+
         #endregion
 
         #region CreatingCopiesMethods
@@ -118,6 +166,48 @@ namespace MeetMeWeb.Tests.Unit_Tests
                 User2 = CreateUserCopy(original.User2)
             };
         }
+
+        public static Meeting CreateMeetingCopy(Meeting original)
+        {
+            return new Meeting
+            {
+                ID = original.ID,
+                Start = original.Start,
+                End = original.End,
+                Location = original.Location,
+                Title = original.Title,
+                Priority = original.Priority,
+                creator = CreateUserCopy(original.creator)
+            };
+        }
+
+        public static MeetingRequest CreateMeetingRequestCopy(MeetingRequest original)
+        {
+            return new MeetingRequest
+            {
+                ID = original.ID,
+                Content = original.Content,
+                Status = original.Status,
+                Meeting = CreateMeetingCopy(original.Meeting),
+                User = CreateUserCopy(original.User)
+            };
+        }
+
+        public static Event CreateEventCopy(Event original)
+        {
+            return new Event
+            {
+                ID = original.ID,
+                Title = original.Title,
+                Start = original.Start,
+                End = original.End,
+                Location = original.Location,
+                MR = CreateMeetingRequestCopy(original.MR),
+                User = CreateUserCopy(original.User),
+                Priority = original.Priority,
+                flag = original.flag
+            };
+        }
         #endregion
 
         #region CheckAssertsMethods
@@ -140,6 +230,41 @@ namespace MeetMeWeb.Tests.Unit_Tests
             CheckAssertsForUser(expected.User1, actual.User1);
             CheckAssertsForUser(expected.User2, actual.User2);
         }
+
+        public static void CheckAssertsForMeeting(Meeting expected, Meeting actual)
+        {
+            Assert.AreEqual(expected.ID, actual.ID);
+            Assert.AreEqual(expected.Title, actual.Title);
+            Assert.AreEqual(expected.Location, actual.Location);
+            Assert.AreEqual(expected.Priority, actual.Priority);
+            Assert.AreEqual(expected.Start, actual.Start);
+            Assert.AreEqual(expected.End, actual.End);
+            CheckAssertsForUser(expected.creator, actual.creator);
+        }
+
+        public static void CheckAssertsForMeetingRequest(MeetingRequest expected, MeetingRequest actual)
+        {
+            Assert.AreEqual(expected.ID, actual.ID);
+            Assert.AreEqual(expected.Content, actual.Content);
+            Assert.AreEqual(expected.Status, actual.Status);
+            CheckAssertsForUser(expected.User, actual.User);
+            CheckAssertsForMeeting(expected.Meeting, actual.Meeting);
+        }
+
+        public static void CheckAssertsForEvent(Event expected, Event actual)
+        {
+            Assert.AreEqual(expected.ID, actual.ID);
+            Assert.AreEqual(expected.Title, actual.Title);
+            Assert.AreEqual(expected.Location, actual.Location);
+            Assert.AreEqual(expected.Priority, actual.Priority);
+            Assert.AreEqual(expected.Start, actual.Start);
+            Assert.AreEqual(expected.End, actual.End);
+            Assert.AreEqual(expected.flag, actual.flag);
+            CheckAssertsForUser(expected.User, actual.User);
+            CheckAssertsForMeetingRequest(expected.MR, actual.MR);
+        }
+
+
 
         #endregion
     }
