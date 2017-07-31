@@ -305,6 +305,7 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tests\Integration_Tests\Init.cs" />
+    <Compile Include="Tests\Unit_Tests\ConnectionServiceTests.cs" />
     <Compile Include="Tests\Unit_Tests\EventServiceTests.cs" />
     <Compile Include="Tests\Unit_Tests\MeetingRequestServiceTests.cs" />
     <Compile Include="Tests\Unit_Tests\MeetingServiceTests.cs" />

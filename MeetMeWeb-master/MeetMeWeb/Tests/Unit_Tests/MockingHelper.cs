@@ -19,7 +19,7 @@ namespace MeetMeWeb.Tests.Unit_Tests
                     Id = i.ToString(),
                     FirstName = Guid.NewGuid().ToString(),
                     LastName = Guid.NewGuid().ToString(),
-                    Email = Guid.NewGuid().ToString()+"@gmail.com",
+                    Email = Guid.NewGuid().ToString() + "@gmail.com",
                     BirthDate = DateTime.UtcNow,
                     UserName = Guid.NewGuid().ToString()
                 });
@@ -77,7 +77,7 @@ namespace MeetMeWeb.Tests.Unit_Tests
             {
                 meetingModels.Add(new MeetingModel
                 {
-                    participants= participants,
+                    participants = participants,
                     Start = DateTime.Now,
                     Title = Guid.NewGuid().ToString(),
                     Priority = PrioritiesY.Medium,
@@ -136,6 +136,26 @@ namespace MeetMeWeb.Tests.Unit_Tests
             }
             return events;
         }
+
+        public static List<Connection> PopulateConnections(this List<Connection> connections, int number)
+        {
+            List<User> users = new List<User>();
+            users.PopulateUsers(2);
+
+            for (int i = 0; i < number; i++)
+            {
+                connections.Add(new Connection
+                {
+                    ID = Guid.NewGuid(),
+                    StartDate = DateTime.Now,
+                    Status = Status.Accepted,
+                    User1 = users.First(),
+                    User2 = users.Skip(1).First()
+                });
+            }
+            return connections;
+        }
+
 
         #endregion
 
@@ -208,6 +228,19 @@ namespace MeetMeWeb.Tests.Unit_Tests
                 flag = original.flag
             };
         }
+
+        public static Connection CreateConnectionCopy(Connection original)
+        {
+            return new Connection()
+            {
+                ID = original.ID,
+                StartDate = original.StartDate,
+                Status = original.Status,
+                User1 = CreateUserCopy(original.User1),
+                User2 = CreateUserCopy(original.User2)
+            };
+        }
+
         #endregion
 
         #region CheckAssertsMethods
@@ -262,6 +295,15 @@ namespace MeetMeWeb.Tests.Unit_Tests
             Assert.AreEqual(expected.flag, actual.flag);
             CheckAssertsForUser(expected.User, actual.User);
             CheckAssertsForMeetingRequest(expected.MR, actual.MR);
+        }
+
+        public static void CheckAssertsForConnection(Connection expected, Connection actual)
+        {
+            Assert.AreEqual(expected.ID, actual.ID);
+            Assert.AreEqual(expected.StartDate, actual.StartDate);
+            Assert.AreEqual(expected.Status, actual.Status);
+            CheckAssertsForUser(expected.User1, actual.User1);
+            CheckAssertsForUser(expected.User2, actual.User2);
         }
 
         #endregion
