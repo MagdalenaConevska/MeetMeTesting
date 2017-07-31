@@ -264,8 +264,6 @@ namespace MeetMeWeb.Tests.Unit_Tests
             CheckAssertsForMeetingRequest(expected.MR, actual.MR);
         }
 
-
-
         #endregion
     }
 }

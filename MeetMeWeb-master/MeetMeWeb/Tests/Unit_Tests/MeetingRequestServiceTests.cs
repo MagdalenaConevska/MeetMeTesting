@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace MeetMeWeb.Tests.Unit_Tests
 {
+    [TestFixture]
     public class MeetingRequestServiceTests
     {
         Mock<MeetingRequestService> _meetingRequestServiceMock;
