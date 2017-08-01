@@ -305,13 +305,14 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tests\Integration_Tests\Init.cs" />
-    <Compile Include="Tests\Unit_Tests\AccountServiceTests.cs" />
-    <Compile Include="Tests\Unit_Tests\ConnectionServiceTests.cs" />
-    <Compile Include="Tests\Unit_Tests\EventServiceTests.cs" />
-    <Compile Include="Tests\Unit_Tests\MeetingRequestServiceTests.cs" />
-    <Compile Include="Tests\Unit_Tests\MeetingServiceTests.cs" />
+    <Compile Include="Tests\Unit_Tests\RepositoriesTests\UserRepositoryTests.cs" />
+    <Compile Include="Tests\Unit_Tests\ServicesTests\AccountServiceTests.cs" />
+    <Compile Include="Tests\Unit_Tests\ServicesTests\ConnectionServiceTests.cs" />
+    <Compile Include="Tests\Unit_Tests\ServicesTests\EventServiceTests.cs" />
+    <Compile Include="Tests\Unit_Tests\ServicesTests\MeetingRequestServiceTests.cs" />
+    <Compile Include="Tests\Unit_Tests\ServicesTests\MeetingServiceTests.cs" />
     <Compile Include="Tests\Unit_Tests\MockingHelper.cs" />
-    <Compile Include="Tests\Unit_Tests\UserServiceTests.cs" />
+    <Compile Include="Tests\Unit_Tests\ServicesTests\UserServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
