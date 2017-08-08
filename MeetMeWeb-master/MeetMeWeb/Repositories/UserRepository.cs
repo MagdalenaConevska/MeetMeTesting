@@ -8,7 +8,7 @@ namespace MeetMeWeb.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private MeetMeDbContext _context;
+        public MeetMeDbContext _context { get; set; }
 
         public UserRepository()
         {

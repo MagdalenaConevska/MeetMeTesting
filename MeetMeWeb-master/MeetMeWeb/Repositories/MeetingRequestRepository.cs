@@ -21,7 +21,7 @@ namespace MeetMeWeb.Repositories
         }
         public void createMeetingRequest(MeetingRequest meetingRequest)
         {
-            
+
             _context.Entry(meetingRequest.User).State = System.Data.Entity.EntityState.Unchanged;
             _context.Entry(meetingRequest.Meeting).State = System.Data.Entity.EntityState.Unchanged;
             _context.Entry(meetingRequest).State = System.Data.Entity.EntityState.Added;
