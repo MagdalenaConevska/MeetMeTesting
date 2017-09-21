@@ -33,5 +33,11 @@ namespace MeetMeWeb.Repositories
         {
             return _context.ConnectionNotifications.Include("User1").Where(x => x.User2.Id == userId).OrderByDescending(x => x.Date).Skip(startPostion).Take(size).ToList();
         }
+        
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+    
     }
 }

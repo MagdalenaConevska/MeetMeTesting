@@ -304,6 +304,7 @@
     <Compile Include="Services\MeetingService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tests\Integration_Tests\TestFixture.cs" />
     <Compile Include="Tests\Integration_Tests\Init.cs" />
     <Compile Include="Tests\Mocks\DbSetMock.cs" />
     <Compile Include="Tests\Unit_Tests\RepositoriesTests\UserRepositoryTests.cs" />
