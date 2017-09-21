@@ -1,23 +1,18 @@
 ﻿using MeetMeWeb.Models;
 using MeetMeWeb.Repositories;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using MeetMeWeb.Tests.Mocks;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.Linq.Expressions;
 
 namespace MeetMeWeb.Tests.Unit_Tests.RepositoriesTests
 {
     [TestFixture]
-    public class UserRepositoryTests : DbSet<User>
+    public class UserRepositoryTests
     {
+        DbSetMock<User> _dbSet;
         Mock<MeetMeDbContext> _contextMock;
         Mock<UserRepository> _userRepoMock;
 
@@ -26,70 +21,110 @@ namespace MeetMeWeb.Tests.Unit_Tests.RepositoriesTests
         [SetUp]
         public void Setup()
         {
+            _dbSet = new DbSetMock<User>();
             _contextMock = new Mock<MeetMeDbContext>();
             _userRepoMock = new Mock<UserRepository>();
 
-            _userRepoMock.Object._context = _contextMock.Object;
+            _users = new List<User>();
 
-            _users = new List<User>();         
+            _userRepoMock.Object._context = _contextMock.Object;
         }
 
         #region getUserById
-
         [Test]
         public void getUserById_UserFound_Repo()
         {
-            _users.PopulateUsers(1);
-            User user = _users.First();
-            User mockedUser = MockingHelper.CreateUserCopy(user);
+            _users.PopulateUsers(3);
+            _users.ForEach(f => _dbSet.Add(MockingHelper.CreateUserCopy(f)));
 
-            _contextMock.Setup(f => f.Users.Find(It.IsAny<string>())).Returns(user);
+            _contextMock.Setup(f => f.Users).Returns(_dbSet);
 
-            var result = _userRepoMock.Object.getUserById(user.Id);
+            User result = _userRepoMock.Object.getUserById(_users.First().Id);
 
-            _contextMock.Verify(f => f.Users.Find(It.Is<string>(k => k == mockedUser.Id)), Times.Once);
+            _contextMock.Verify(f => f.Users, Times.Once);
 
-            MockingHelper.CheckAssertsForUser(mockedUser, result);
+            MockingHelper.CheckAssertsForUser(_users.First(), result);
         }
 
-        #endregion
-
-        #region getUserByUsername
-
         [Test]
-        public void getUserByUsername_UserFoundLocal_Repo()
+        public void getUserById_UserNotFound_Repo()
         {
             _users.PopulateUsers(2);
-            User user = _users.First();
-            User mockedUser = MockingHelper.CreateUserCopy(user);
+            _users.ForEach(f => _dbSet.Add(f));
 
-            ObservableCollection<User> _dbUsers = new ObservableCollection<User>();
+            _contextMock.Setup(f => f.Users).Returns(_dbSet);
 
-            foreach (User u in _users)
-            {
-                _dbUsers.Add(u);
-            }
+            var result = _userRepoMock.Object.getUserById(Guid.NewGuid().ToString());
 
-            _contextMock.Setup(f => f.Users.Local).Returns(_dbUsers);
-
-            var result = _userRepoMock.Object.getUserByUsername(user.UserName);
-
-            _contextMock.Verify(f => f.Users.Local, Times.Once);
-        }
-
-        //This test is implemented without using the mocking framework, because in order to write a test
-        //which tests the if condition when true, we needed to mock f.Users from the _context object, but
-        //we couldn't set a return value due to the protected key DbSet of the DbSet<User> implementation 
-        //However this is only a get method and is not altering the database with test content.
-        //We will make this kind of "no-mock" tests in similar scenarios.
-        [Test]
-        public void getUserByUsername_UserNotFound_WithoutMocking_Repo()
-        {
-            UserRepository userRepository = new UserRepository();
-
-            var result = userRepository.getUserByUsername(Guid.NewGuid().ToString());
+            _contextMock.Verify(f => f.Users, Times.Once);
 
             Assert.IsNull(result);
+        }
+        #endregion
+        #region getUserByUsername
+        [Test]
+        public void getUserByUsername_UserFoundInLocal_Repo()
+        {
+            _users.PopulateUsers(2);
+            _users.ForEach(f => _dbSet.Add(MockingHelper.CreateUserCopy(f)));
+
+            _contextMock.Setup(f => f.Users).Returns(_dbSet);
+
+            var result = _userRepoMock.Object.getUserByUsername(_users.First().UserName);
+
+            _contextMock.Verify(f => f.Users, Times.Once);
+
+            MockingHelper.CheckAssertsForUser(_users.First(), result);
+        }
+
+        [Test]
+        public void getUserByUsername_UserFoundNotInLocal_Repo()
+        {
+            _users.PopulateUsers(2);
+            _users.ForEach(f => _dbSet.Add(MockingHelper.CreateUserCopy(f)));
+
+            _dbSet.Local.RemoveAt(0);
+
+            _contextMock.Setup(f => f.Users).Returns(_dbSet);
+
+            var result = _userRepoMock.Object.getUserByUsername(_users.First().UserName);
+
+            _contextMock.Verify(f => f.Users, Times.Exactly(2));
+
+            MockingHelper.CheckAssertsForUser(_users.First(), result);
+        }
+
+        [Test]
+        public void getUserByUsername_UserNotFound_Repo()
+        {
+            _users.PopulateUsers(1);
+            _users.ForEach(f => _dbSet.Add(MockingHelper.CreateUserCopy(f)));
+
+            _contextMock.Setup(f => f.Users).Returns(_dbSet);
+
+            var result = _userRepoMock.Object.getUserByUsername(Guid.NewGuid().ToString());
+
+            _contextMock.Verify(f => f.Users, Times.Exactly(2));
+
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void getUserByUsername_UsenameNotUnique_ThrowsInvalidOperationException()
+        {
+            _users.PopulateUsers(3);
+            _users.Skip(1).First().UserName = _users.First().UserName;
+            _users.ForEach(f => _dbSet.Add(MockingHelper.CreateUserCopy(f)));
+
+            _contextMock.Setup(f => f.Users).Returns(_dbSet);
+
+            Assert.Throws<InvalidOperationException>(() => {
+
+               _userRepoMock.Object.getUserByUsername(_users.First().UserName);
+
+            });
+            
+            _contextMock.Verify(f => f.Users, Times.Exactly(1));
         }
 
         #endregion
@@ -97,19 +132,23 @@ namespace MeetMeWeb.Tests.Unit_Tests.RepositoriesTests
         #region getAll
 
         [Test]
-        public void getAll_Repo()
+        public void getAll()
         {
-            UserRepository userRepository = new UserRepository();
+            _users.PopulateUsers(3);
+            _users.ForEach(f => _dbSet.Add(MockingHelper.CreateUserCopy(f)));
 
-            var result = userRepository.getAll();
+            _contextMock.Setup(f => f.Users).Returns(_dbSet);
 
-            Assert.IsNotNull(result);
+            var result = _userRepoMock.Object.getAll();
+
+            _contextMock.Verify(f => f.Users, Times.Once);
+
+            int i = 0;
+            _users.ForEach(f => MockingHelper.CheckAssertsForUser(f, result.Skip(i++).First()));
+
         }
 
         #endregion
-
-
-
 
     }
 }

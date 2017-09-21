@@ -1,5 +1,4 @@
 ﻿using MeetMeWeb.Repositories.Interfaces;
-using System;
 using MeetMeWeb.Models;
 using System.Linq;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ namespace MeetMeWeb.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private MeetMeDbContext _context;
+        public MeetMeDbContext _context;
 
         public UserRepository()
         {
