@@ -18,10 +18,10 @@ namespace MeetMeWeb
             return new MeetMeDbContext();
         }
 
-        public DbSet<Event> Events { get; set; }
-        public DbSet<Meeting> Meetings { get; set; }
-        public DbSet<Connection> Connections { get; set; }
-        public DbSet<ConnectionNotification> ConnectionNotifications { get; set; }
-        public DbSet<MeetingRequest> MeetingRequests { get; set; }
+        public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<Meeting> Meetings { get; set; }
+        public virtual DbSet<Connection> Connections { get; set; }
+        public virtual DbSet<ConnectionNotification> ConnectionNotifications { get; set; }
+        public virtual DbSet<MeetingRequest> MeetingRequests { get; set; }
     }
 }

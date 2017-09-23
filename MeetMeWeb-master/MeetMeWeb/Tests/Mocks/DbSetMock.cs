@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MeetMeWeb.Tests.Mocks
 {
-    public sealed class DbSetMock<T> : IDbSet<T>, IQueryable, IEnumerable<T>, IDbAsyncEnumerable<T> where T : class
+    public sealed class DbSetMock<T> : DbSet<T>,  IDbSet<T>, IQueryable, IEnumerable<T>, IDbAsyncEnumerable<T> where T : class
     {
         readonly ObservableCollection<T> _localData;
 
@@ -42,11 +42,10 @@ namespace MeetMeWeb.Tests.Mocks
             }
         }
 
-        public ObservableCollection<T> Local
+        public override ObservableCollection<T> Local
         {
             get
             {
-
                 return _localData;
             }
         }
@@ -59,26 +58,26 @@ namespace MeetMeWeb.Tests.Mocks
             }
         }
 
-        public T Add(T entity)
+        public override T Add(T entity)
         {
             _data.Add(entity);
             _localData.Add(entity);
             return entity;
         }
 
-        public T Attach(T entity)
+        public override T Attach(T entity)
         {
             _data.Add(entity);
             _localData.Add(entity);
             return entity;
         }
 
-        public T Create()
+        public override T Create()
         {
             return Activator.CreateInstance<T>();
         }
 
-        public T Find(params object[] keyValues)
+        public override T Find(params object[] keyValues)
         {
             foreach (object keyValue in keyValues)
             {
@@ -96,7 +95,6 @@ namespace MeetMeWeb.Tests.Mocks
             }
 
             return null;
-
         }
 
         public IDbAsyncEnumerator<T> GetAsyncEnumerator()
@@ -106,10 +104,10 @@ namespace MeetMeWeb.Tests.Mocks
 
         public IEnumerator<T> GetEnumerator()
         {
-          return _data.GetEnumerator();
+            return _data.GetEnumerator();
         }
 
-        public T Remove(T entity)
+        public override T Remove(T entity)
         {
             _data.Remove(entity);
             _localData.Remove(entity);

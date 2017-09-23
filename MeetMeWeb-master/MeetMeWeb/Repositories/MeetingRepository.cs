@@ -10,7 +10,7 @@ namespace MeetMeWeb.Repositories
 {
     public class MeetingRepository : IMeetingRepository
     {
-        private MeetMeDbContext _context;
+        public MeetMeDbContext _context;
         public MeetingRepository()
         {
             _context = new MeetMeDbContext();
