@@ -9,7 +9,7 @@ namespace MeetMeWeb.Repositories
 {
     public class ConnectionRepository : IConnectionRepository
     {
-        private MeetMeDbContext _context;
+        public MeetMeDbContext _context;
 
         public ConnectionRepository()
         {

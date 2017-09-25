@@ -306,6 +306,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Tests\Integration_Tests\TestFixture.cs" />
     <Compile Include="Tests\Mocks\DbSetMock.cs" />
+    <Compile Include="Tests\Unit_Tests\RepositoriesTests\ConnectionRepositoryTests.cs" />
     <Compile Include="Tests\Unit_Tests\RepositoriesTests\EventRepositoryTests.cs" />
     <Compile Include="Tests\Unit_Tests\RepositoriesTests\MeetingRepositoryTests.cs" />
     <Compile Include="Tests\Unit_Tests\RepositoriesTests\UserRepositoryTests.cs" />
