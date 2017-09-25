@@ -10,7 +10,7 @@ namespace MeetMeWeb.Repositories
 {
     public class EventRepository: IEventRepository
     {
-        private MeetMeDbContext _context;
+        public MeetMeDbContext _context;
 
         public EventRepository()
         {

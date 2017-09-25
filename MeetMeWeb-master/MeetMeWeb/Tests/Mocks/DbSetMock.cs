@@ -92,6 +92,17 @@ namespace MeetMeWeb.Tests.Mocks
                         }
                     }
                 }
+                else if (_data.First().GetType() == typeof(Event))
+                {
+                    foreach (T eventt in _data)
+                    {
+                        Event current = eventt as Event;
+                        if (current.ID == keyValue as Guid?)
+                        {
+                            return current as T;
+                        }
+                    }
+                }
             }
 
             return null;
