@@ -7,7 +7,7 @@ namespace MeetMeWeb.Repositories
 {
     public class ConnectionNotificationRepository : IConnectionNotificationRepository
     {
-        private MeetMeDbContext _context;
+        public MeetMeDbContext _context;
 
         public ConnectionNotificationRepository()
         {
