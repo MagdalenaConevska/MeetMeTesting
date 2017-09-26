@@ -13,9 +13,9 @@ namespace MeetMeWeb.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
-        private MeetMeDbContext _context;
+        public MeetMeDbContext _context;
 
-        private UserManager<User> _userManager;
+        public UserManager<User> _userManager;
 
         public AuthRepository()
         {
