@@ -167,6 +167,67 @@ namespace MeetMeWeb.Tests.Unit_Tests.RepositoriesTests
         }
 
         [Test]
+        public async Task deleteEvent_WithMeetingCreatorAndTwoMR_EventDeleted()
+        {
+            _events.PopulateEvents(3);
+            _meetings.PopulateMeetings(2);
+            _meetingRequests.PopulateMeetingRequests(2);
+
+            _meetingRequests.First().Meeting.ID = _meetings.First().ID;
+            _meetingRequests.Skip(1).First().Meeting.ID = _meetings.First().ID;
+
+            _events.ForEach(f => _dbSet.Add(MockingHelper.CreateEventCopy(f)));
+            _meetings.ForEach(f => _dbMeetingSet.Add(MockingHelper.CreateMeetingCopy(f)));
+            _meetingRequests.ForEach(f => _dbRequestsSet.Add(MockingHelper.CreateMeetingRequestCopy(f)));
+
+            _contextMock.Setup(f => f.Events).Returns(_dbSet);
+            _contextMock.Setup(f => f.Meetings).Returns(_dbMeetingSet);
+            _contextMock.Setup(f => f.MeetingRequests).Returns(_dbRequestsSet);
+            _contextMock.Setup(f => f.SaveChanges()).Returns(0);
+
+            var result = await _eventRepoMock.Object.DeleteEvent(_meetings.First().Title, _events.First().ID, _meetings.First().creator.UserName);
+
+            _contextMock.Verify(f => f.Events, Times.Exactly(2));
+            _contextMock.Verify(f => f.Meetings, Times.Exactly(2));
+            _contextMock.Verify(f => f.MeetingRequests, Times.Exactly(3));
+            _contextMock.Verify(f => f.SaveChanges(), Times.Once);
+
+            Assert.AreEqual(_dbSet.Count(), 3);
+            Assert.AreEqual(_dbRequestsSet.Count(), 0);
+            Assert.AreEqual(_dbMeetingSet.Count(), 1);
+        }
+
+        [Test]
+        public async Task deleteEvent_WithMeetingCreatorMRNoEvent_EventNull()
+        {
+            _events.PopulateEvents(3);
+            _meetings.PopulateMeetings(2);
+            _meetingRequests.PopulateMeetingRequests(1);
+
+            _meetingRequests.First().Meeting.ID = _meetings.First().ID;
+
+            _events.ForEach(f => _dbSet.Add(MockingHelper.CreateEventCopy(f)));
+            _meetings.ForEach(f => _dbMeetingSet.Add(MockingHelper.CreateMeetingCopy(f)));
+            _meetingRequests.ForEach(f => _dbRequestsSet.Add(MockingHelper.CreateMeetingRequestCopy(f)));
+
+            _contextMock.Setup(f => f.Events).Returns(_dbSet);
+            _contextMock.Setup(f => f.Meetings).Returns(_dbMeetingSet);
+            _contextMock.Setup(f => f.MeetingRequests).Returns(_dbRequestsSet);
+            _contextMock.Setup(f => f.SaveChanges()).Returns(0);
+
+            var result = await _eventRepoMock.Object.DeleteEvent(_meetings.First().Title, Guid.NewGuid(), _meetings.First().creator.UserName);
+
+            _contextMock.Verify(f => f.Events, Times.Exactly(2));
+            _contextMock.Verify(f => f.Meetings, Times.Exactly(2));
+            _contextMock.Verify(f => f.MeetingRequests, Times.Exactly(2));
+            _contextMock.Verify(f => f.SaveChanges(), Times.Once);
+
+            Assert.AreEqual(_dbSet.Count(), 3);
+            Assert.AreEqual(_dbRequestsSet.Count(), 0);
+            Assert.AreEqual(_dbMeetingSet.Count(), 1);
+        }
+
+        [Test]
         public async Task deleteEvent_WithMeetingAndCreator_EventDeleted()
         {
             _events.PopulateEvents(3);
@@ -188,13 +249,70 @@ namespace MeetMeWeb.Tests.Unit_Tests.RepositoriesTests
 
             _contextMock.Verify(f => f.Events, Times.Exactly(3));
             _contextMock.Verify(f => f.Meetings, Times.Exactly(2));
-            _contextMock.Verify(f => f.MeetingRequests, Times.Exactly(1));
+            _contextMock.Verify(f => f.MeetingRequests, Times.Once);
             _contextMock.Verify(f => f.SaveChanges(), Times.Once);
 
             Assert.AreEqual(_dbSet.Count(), 2);
             Assert.AreEqual(_dbRequestsSet.Count(), 1);
             Assert.AreEqual(_dbMeetingSet.Count(), 1);
-            MockingHelper.CheckAssertsForEvent(_events.First(), result);
+        }
+
+        [Test]
+        public async Task deleteEvent_WithMeetingAndCreatorTwoEvents_EventsDeleted()
+        {
+            _events.PopulateEvents(3);
+            _meetings.PopulateMeetings(2);
+            _meetingRequests.PopulateMeetingRequests(1);
+
+            _meetings.First().Title = _events.Skip(1).First().Title = _events.First().Title;
+
+            _events.ForEach(f => _dbSet.Add(MockingHelper.CreateEventCopy(f)));
+            _meetings.ForEach(f => _dbMeetingSet.Add(MockingHelper.CreateMeetingCopy(f)));
+            _meetingRequests.ForEach(f => _dbRequestsSet.Add(MockingHelper.CreateMeetingRequestCopy(f)));
+
+            _contextMock.Setup(f => f.Events).Returns(_dbSet);
+            _contextMock.Setup(f => f.Meetings).Returns(_dbMeetingSet);
+            _contextMock.Setup(f => f.MeetingRequests).Returns(_dbRequestsSet);
+            _contextMock.Setup(f => f.SaveChanges()).Returns(0);
+
+            var result = await _eventRepoMock.Object.DeleteEvent(_events.First().Title, _events.First().ID, _meetings.First().creator.UserName);
+
+            _contextMock.Verify(f => f.Events, Times.Exactly(4));
+            _contextMock.Verify(f => f.Meetings, Times.Exactly(2));
+            _contextMock.Verify(f => f.MeetingRequests, Times.Once);
+            _contextMock.Verify(f => f.SaveChanges(), Times.Once);
+
+            Assert.AreEqual(_dbSet.Count(), 1);
+            Assert.AreEqual(_dbRequestsSet.Count(), 1);
+            Assert.AreEqual(_dbMeetingSet.Count(), 1);
+        }
+
+        [Test]
+        public async Task deleteEvent_WithMeetingAndCreatorNoEvents_NoEventDeleted()
+        {
+            _events.PopulateEvents(3);
+            _meetings.PopulateMeetings(2);
+            _meetingRequests.PopulateMeetingRequests(1);
+
+            _events.ForEach(f => _dbSet.Add(MockingHelper.CreateEventCopy(f)));
+            _meetings.ForEach(f => _dbMeetingSet.Add(MockingHelper.CreateMeetingCopy(f)));
+            _meetingRequests.ForEach(f => _dbRequestsSet.Add(MockingHelper.CreateMeetingRequestCopy(f)));
+
+            _contextMock.Setup(f => f.Events).Returns(_dbSet);
+            _contextMock.Setup(f => f.Meetings).Returns(_dbMeetingSet);
+            _contextMock.Setup(f => f.MeetingRequests).Returns(_dbRequestsSet);
+            _contextMock.Setup(f => f.SaveChanges()).Returns(0);
+
+            var result = await _eventRepoMock.Object.DeleteEvent(_meetings.First().Title, _events.First().ID, _meetings.First().creator.UserName);
+
+            _contextMock.Verify(f => f.Events, Times.Exactly(2));
+            _contextMock.Verify(f => f.Meetings, Times.Exactly(2));
+            _contextMock.Verify(f => f.MeetingRequests, Times.Once);
+            _contextMock.Verify(f => f.SaveChanges(), Times.Once);
+
+            Assert.AreEqual(_dbSet.Count(), 3);
+            Assert.AreEqual(_dbRequestsSet.Count(), 1);
+            Assert.AreEqual(_dbMeetingSet.Count(), 1);
         }
 
         [Test]
